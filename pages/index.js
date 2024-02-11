@@ -1,4 +1,12 @@
+
+import Formulario from '../components/Formulario';
+
 function Home() {
-  return <h2>Home</h2>;
+  return (<div>
+    <Formulario/>
+  </div>);
+
+
 }
+
 export default Home;

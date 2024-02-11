@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "keywords": [],
-  "author": "",
+  "author": "Vinicius Dev <vinicius.dev@viniciusdev.com.br> (https://github.com/viniciusdev772)",
   "license": "ISC",
   "dependencies": {
     "next": "^14.1.0",
@@ -20,5 +20,13 @@
     "autoprefixer": "^10.4.17",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viniciusdev772/nextjsnovoapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/viniciusdev772/nextjsnovoapp/issues"
+  },
+  "homepage": "https://github.com/viniciusdev772/nextjsnovoapp#readme"
 }
