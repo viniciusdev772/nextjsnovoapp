@@ -64,7 +64,7 @@ export default function Home() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3002/upload",
+        "https://cdn.viniciusdev.com.br/upload",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
