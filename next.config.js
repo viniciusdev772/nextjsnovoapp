@@ -1,5 +1,5 @@
 module.exports = {
   env: {
-    API_ENDPOINT: "http://cdn.viniciusdev.com.br",
+    API_ENDPOINT: "https://cdn.viniciusdev.com.br",
   },
 };

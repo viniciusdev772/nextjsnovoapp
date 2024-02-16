@@ -20,7 +20,7 @@ const fetchDashboardData = async () => {
       throw new Error("Token JWT não encontrado");
     }
     const response = await axios.post(
-      "http://cdn.viniciusdev.com.br/dashboard",
+      "https://cdn.viniciusdev.com.br/dashboard",
       {},
       {
         headers: {
