@@ -1,5 +1,5 @@
 module.exports = {
   env: {
-    API_ENDPOINT: "http://localhost:3002",
+    API_ENDPOINT: "http://cdn.viniciusdev.com.br",
   },
 };

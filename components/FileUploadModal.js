@@ -51,7 +51,7 @@ function FileUploadModal({ isOpen, onClose }) {
     };
 
     axios
-      .post("http://localhost:3002/upload_event", formData, config)
+      .post("http://cdn.viniciusdev.com.br/upload_event", formData, config)
       .then((response) => {
         console.log(response.data);
         onClose(); // Fecha o modal após o sucesso do upload
