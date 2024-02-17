@@ -104,7 +104,26 @@ export default function Dashboard() {
 
   const removeFile = async (fileId) => {
     console.log(`Removendo arquivo com ID: ${fileId}`);
-    closeActionsModal();
+
+    // Fazer a requisição para remover o arquivo
+
+    const tokenJWT = localStorage.getItem("token");
+    // Fazer a requisição para remover o arquivo com Axios
+    const response = await axios.post(
+      "https://cdn.viniciusdev.com.br/delete_event",
+      { id: fileId },
+      {
+        headers: {
+          Authorization: tokenJWT,
+        },
+      }
+    );
+    if (response.status === 200) {
+      closeActionsModal();
+      alert("Arquivo deletado com sucesso");
+    } else {
+      alert("Erro ao deletar arquivo");
+    }
   };
 
   const generateDirectLink = (fileId) => {
