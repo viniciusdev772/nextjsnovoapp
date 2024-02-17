@@ -5,13 +5,23 @@ function FileUploadModal({ isOpen, onClose }) {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [progress, setProgress] = useState(0);
+  const [errorMessage, setErrorMessage] = useState(""); // Adicionado para gerenciar mensagens de erro
   const fileInputRef = useRef(null);
+  const MAX_FILE_SIZE = 700 * 1024 * 1024; // 700MB em bytes
 
   const handleFileChange = (event) => {
     const newFile = event.target.files[0];
     if (newFile) {
+      if (newFile.size > MAX_FILE_SIZE) {
+        setErrorMessage(
+          "O arquivo excede o limite de 700MB. Por favor, selecione um arquivo menor."
+        );
+        return; // Impede a seleção do arquivo
+      } else {
+        setErrorMessage(""); // Limpa a mensagem de erro se o arquivo é válido
+      }
+
       setFile(newFile);
-      // Verifica se o arquivo é uma imagem para pré-visualização
       if (newFile.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -19,7 +29,6 @@ function FileUploadModal({ isOpen, onClose }) {
         };
         reader.readAsDataURL(newFile);
       } else {
-        // Reseta a pré-visualização se o arquivo não for uma imagem
         setPreviewUrl("");
       }
       setProgress(0); // Reseta o progresso ao selecionar um novo arquivo
@@ -34,9 +43,8 @@ function FileUploadModal({ isOpen, onClose }) {
     if (!file) return;
 
     const formData = new FormData();
-    formData.append("arquivo", file); // O nome 'arquivo' deve corresponder ao esperado pelo backend
+    formData.append("arquivo", file);
 
-    console.log(localStorage.getItem("token"));
     const config = {
       headers: {
         Authorization: localStorage.getItem("token"),
@@ -58,8 +66,8 @@ function FileUploadModal({ isOpen, onClose }) {
       })
       .catch((error) => {
         console.error("Upload error: ", error);
-        //mostrar mensagem de erro
-        alert("Erro ao fazer upload do arquivo.", error.data.error);
+        // Atualizar para exibir a mensagem de erro de forma apropriada
+        setErrorMessage("Erro ao fazer upload do arquivo: " + error.message);
       });
   };
 
@@ -101,6 +109,8 @@ function FileUploadModal({ isOpen, onClose }) {
               </button>
             )}
           </div>
+          {/* Exibe a mensagem de erro aqui */}
+          {errorMessage && <div className="text-red-500">{errorMessage}</div>}
           <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
             <div
               className="bg-blue-600 h-2.5 rounded-full"
