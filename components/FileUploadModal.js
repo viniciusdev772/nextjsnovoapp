@@ -58,6 +58,8 @@ function FileUploadModal({ isOpen, onClose }) {
       })
       .catch((error) => {
         console.error("Upload error: ", error);
+        //mostrar mensagem de erro
+        alert("Erro ao fazer upload do arquivo.", error.data.error);
       });
   };
 

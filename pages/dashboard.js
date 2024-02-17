@@ -17,7 +17,8 @@ const fetchDashboardData = async () => {
   try {
     const tokenJWT = localStorage.getItem("token");
     if (!tokenJWT) {
-      throw new Error("Token JWT não encontrado");
+      window.location.href = "/";
+      //redirecionar para a página de login
     }
     const response = await axios.post(
       "https://cdn.viniciusdev.com.br/dashboard",
