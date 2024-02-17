@@ -37,12 +37,21 @@ const fetchDashboardData = async () => {
 };
 
 function ItemList({ espacoDisponivel, items, onItemSelected }) {
-  if (!items.length) return <div>Nenhum item encontrado.</div>;
+  if (!items.length)
+    return (
+      (<div>Nenhum item encontrado.</div>),
+      (
+        <h2 className="text-xl font-bold mb-4">
+          {" "}
+          Você ainda tem {formatBytes(espacoDisponivel)} Livres
+        </h2>
+      )
+    );
   return (
     <div>
       <h2 className="text-xl font-bold mb-4">
         {" "}
-        {formatBytes(espacoDisponivel)}
+        Você ainda tem {formatBytes(espacoDisponivel)} Livres
       </h2>
       <div className="space-y-3">
         {items.map((item) => (
@@ -120,7 +129,9 @@ export default function Dashboard() {
     );
     if (response.status === 200) {
       closeActionsModal();
-      alert("Arquivo deletado com sucesso");
+      //remove o arquivo da lista
+      setItems(items.filter((item) => item.id !== fileId));
+      window.location.reload();
     } else {
       alert("Erro ao deletar arquivo");
     }
