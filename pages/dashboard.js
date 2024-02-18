@@ -174,9 +174,9 @@ export default function Dashboard() {
 
           {plano === "free" ? (
             <PlanosComponent />
-          ) : (
+          ) : plano ? (
             <div className="mb-6 text-lg font-semibold">{plano}</div>
-          )}
+          ) : null}
           <ItemList
             espacoDisponivel={espacoDisponivel}
             items={items}
