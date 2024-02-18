@@ -59,6 +59,7 @@ function Formulario() {
       localStorage.setItem("uid", response.data.uid);
       //salvar o storage no localStorage
       localStorage.setItem("storage", response.data.storage);
+      localStorage.setItem("plano", response.data.plano);
 
       // Redireciona para a página de dashboard
       window.location.href = "/dashboard";

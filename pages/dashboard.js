@@ -94,6 +94,7 @@ export default function Dashboard() {
   const [isActionsModalOpen, setIsActionsModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [items, setItems] = useState([]);
+  const [plano, setPlano] = useState("");
 
   const [espacoDisponivel, setEspacoDisponivel] = useState(0);
   const [promocoes, setPromocoes] = useState([
@@ -110,6 +111,10 @@ export default function Dashboard() {
     const nome = localStorage.getItem("nome");
     if (nome) {
       setNomeDoLocal(nome);
+    }
+    const planoLocal = localStorage.getItem("plano");
+    if (planoLocal) {
+      setPlano(planoLocal);
     }
   }, []);
 
@@ -167,7 +172,11 @@ export default function Dashboard() {
             Bem-vindo, {nomeDoLocal || "Usuário"}!
           </h1>
 
-          <PlanosComponent />
+          {plano === "free" ? (
+            <PlanosComponent />
+          ) : (
+            <div className="mb-6 text-lg font-semibold">{plano}</div>
+          )}
           <ItemList
             espacoDisponivel={espacoDisponivel}
             items={items}
