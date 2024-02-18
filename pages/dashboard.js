@@ -31,7 +31,7 @@ const fetchDashboardData = async () => {
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar dados do dashboard:", error);
-    return { arquivos: [], espacoDisponivel: 0, expiracao: 0 };
+    return { arquivos: [], espacoDisponivel: 0, expiracao: 0, planos: "" };
   }
 };
 
@@ -107,16 +107,13 @@ export default function Dashboard() {
     fetchDashboardData().then((data) => {
       setItems(data.arquivos || []);
       setExpiracao(data.expiracao || "");
+      setPlano(data.plano || "free");
       setEspacoDisponivel(data.espacoDisponivel || 0);
     });
 
     const nome = localStorage.getItem("nome");
     if (nome) {
       setNomeDoLocal(nome);
-    }
-    const planoLocal = localStorage.getItem("plano");
-    if (planoLocal) {
-      setPlano(planoLocal);
     }
   }, []);
 
