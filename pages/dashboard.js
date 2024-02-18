@@ -31,7 +31,7 @@ const fetchDashboardData = async () => {
     return response.data;
   } catch (error) {
     console.error("Erro ao buscar dados do dashboard:", error);
-    return { arquivos: [], espacoDisponivel: 0 };
+    return { arquivos: [], espacoDisponivel: 0, expiracao: 0 };
   }
 };
 
@@ -97,6 +97,7 @@ export default function Dashboard() {
   const [plano, setPlano] = useState("");
 
   const [espacoDisponivel, setEspacoDisponivel] = useState(0);
+  const [expiracao, setExpiracao] = useState("");
   const [promocoes, setPromocoes] = useState([
     { titulo: "Precisa de 2GB?", descricao: "Temos também!" },
     { titulo: "Precisa de 5GB?", descricao: "Temos também!" },
@@ -105,6 +106,7 @@ export default function Dashboard() {
   useEffect(() => {
     fetchDashboardData().then((data) => {
       setItems(data.arquivos || []);
+      setExpiracao(data.expiracao || "");
       setEspacoDisponivel(data.espacoDisponivel || 0);
     });
 
@@ -175,7 +177,9 @@ export default function Dashboard() {
           {plano === "free" ? (
             <PlanosComponent />
           ) : plano ? (
-            <div className="mb-6 text-lg font-semibold">{plano}</div>
+            <div className="mb-6 text-lg font-semibold">
+              Seu Plano é de {plano} e expira em {expiracao}
+            </div>
           ) : null}
           <ItemList
             espacoDisponivel={espacoDisponivel}
