@@ -1,8 +1,37 @@
-import React from "react";
-
+import React, { useState } from "react";
+import DialogModal from "./DialogModal";
 const PlanosComponent = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [modalContent, setModalContent] = useState({
+    message: "",
+    qrCodeImg: "",
+    qrCodeText: "",
+  });
+
+  const handlePurchase = async (plano) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("https://cdn.viniciusdev.com.br/change_plan", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({ plano }),
+    });
+
+    const data = await response.json();
+
+    setModalContent({
+      message: data.message, // Supondo que seja a mensagem para o usuário
+      qrCodeImg: data.qrCodeImg, // Substitua com a URL real do QR Code retornada pela API
+      qrCodeText: data.qrCodeText, // Substitua pelo texto real relacionado ao QR Code
+    }); // Supondo que a API retorne uma mensagem no campo 'message'
+    setIsModalOpen(true);
+  };
+
   return (
-    <div className="py-10 ">
+    <div className="py-10">
       <div className="container mx-auto px-4">
         <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
           Escolha Seu Plano
@@ -17,7 +46,10 @@ const PlanosComponent = () => {
                 + Link Direto de Arquivos
               </p>
               <p className="text-center font-bold my-3">R$19,99/mês</p>
-              <button className="w-full bg-white text-blue-500 font-bold py-2 px-4 rounded hover:bg-blue-100 transition-colors duration-200">
+              <button
+                className="w-full bg-white text-blue-500 font-bold py-2 px-4 rounded hover:bg-blue-100 transition-colors duration-200"
+                onClick={() => handlePurchase("5GB")}
+              >
                 Comprar
               </button>
             </div>
@@ -30,9 +62,14 @@ const PlanosComponent = () => {
               <p className="text-center font-medium">
                 Tudo dos Planos Anteriores e mais :
               </p>
-              <p className="text-center font-low">+ Acesso a WhatsApp BOT</p>
+              <p className="text-center font-low">
+                + Acesso a WhatsApp BOT sendo Desenvolvido
+              </p>
               <p className="text-center font-bold my-3">R$49,99/mês</p>
-              <button className="w-full bg-white text-green-500 font-bold py-2 px-4 rounded hover:bg-green-100 transition-colors duration-200">
+              <button
+                className="w-full bg-white text-green-500 font-bold py-2 px-4 rounded hover:bg-green-100 transition-colors duration-200"
+                onClick={() => handlePurchase("15GB")}
+              >
                 Comprar
               </button>
             </div>
@@ -46,12 +83,23 @@ const PlanosComponent = () => {
                 Tudo dos Planos Anteriores e mais :
               </p>
               <p className="text-center font-bold my-3">R$99,99/mês</p>
-              <button className="w-full bg-white text-red-500 font-bold py-2 px-4 rounded hover:bg-red-100 transition-colors duration-200">
+              <button
+                className="w-full bg-white text-red-500 font-bold py-2 px-4 rounded hover:bg-red-100 transition-colors duration-200"
+                onClick={() => handlePurchase("50GB")}
+              >
                 Comprar
               </button>
             </div>
           </div>
         </div>
+
+        <DialogModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          message={modalContent.message}
+          qrCodeImg={modalContent.qrCodeImg}
+          qrCodeText={modalContent.qrCodeText}
+        />
       </div>
     </div>
   );
