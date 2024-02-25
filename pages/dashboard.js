@@ -57,7 +57,12 @@ function ItemList({ espacoDisponivel, items, onItemSelected }) {
   return (
     <div>
       {!items.length ? (
-        <div>Nenhum item encontrado.</div>
+        <>
+          <div>Nenhum item encontrado.</div>
+          <h2 className="text-xl font-bold mb-4">
+            Você ainda tem {formatBytes(espacoDisponivel)} Livres
+          </h2>
+        </>
       ) : (
         <>
           <h2 className="text-xl font-bold mb-4">
