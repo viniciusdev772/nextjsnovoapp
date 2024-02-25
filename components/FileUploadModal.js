@@ -5,9 +5,9 @@ function FileUploadModal({ isOpen, onClose }) {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [progress, setProgress] = useState(0);
-  const [errorMessage, setErrorMessage] = useState(""); // Adicionado para gerenciar mensagens de erro
+  const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
-  const MAX_FILE_SIZE = 700 * 1024 * 1024; // 700MB em bytes
+  const MAX_FILE_SIZE = 700 * 1024 * 1024;
 
   const handleFileChange = (event) => {
     const newFile = event.target.files[0];
@@ -16,9 +16,9 @@ function FileUploadModal({ isOpen, onClose }) {
         setErrorMessage(
           "O arquivo excede o limite de 700MB. Por favor, selecione um arquivo menor."
         );
-        return; // Impede a seleção do arquivo
+        return;
       } else {
-        setErrorMessage(""); // Limpa a mensagem de erro se o arquivo é válido
+        setErrorMessage("");
       }
 
       setFile(newFile);
@@ -31,7 +31,7 @@ function FileUploadModal({ isOpen, onClose }) {
       } else {
         setPreviewUrl("");
       }
-      setProgress(0); // Reseta o progresso ao selecionar um novo arquivo
+      setProgress(0);
     }
   };
 
@@ -62,11 +62,10 @@ function FileUploadModal({ isOpen, onClose }) {
       .post("https://cdn.viniciusdev.com.br/upload_event", formData, config)
       .then((response) => {
         console.log(response.data);
-        onClose(); // Fecha o modal após o sucesso do upload
+        onClose();
       })
       .catch((error) => {
         console.error("Upload error: ", error);
-        // Atualizar para exibir a mensagem de erro de forma apropriada
         setErrorMessage("Erro ao fazer upload do arquivo: " + error.message);
       });
   };
@@ -74,18 +73,18 @@ function FileUploadModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
-      <div className="relative mx-auto p-5 border w-full max-w-lg shadow-lg rounded-md bg-white">
+    <div className="fixed inset-0 bg-black bg-opacity-40 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+      <div className="relative p-4 w-full max-w-2xl bg-white rounded-lg shadow dark:bg-gray-800">
         <div className="text-center">
-          <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
+          <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
             Upload de Arquivo
           </h3>
-          <div className="mt-2">
+          <div className="mt-2 space-y-4">
             {previewUrl && (
               <img
                 src={previewUrl}
                 alt="Preview"
-                className="mb-4 mx-auto max-h-40"
+                className="mx-auto rounded-lg max-h-60"
               />
             )}
             <input
@@ -96,22 +95,23 @@ function FileUploadModal({ isOpen, onClose }) {
             />
             <button
               onClick={triggerFileInput}
-              className="px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 m-2"
+              className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               Escolher Arquivo
             </button>
             {file && (
               <button
                 onClick={handleUpload}
-                className="px-4 py-2 bg-green-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300 m-2"
+                className="inline-flex items-center justify-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Confirmar Envio
               </button>
             )}
           </div>
-          {/* Exibe a mensagem de erro aqui */}
-          {errorMessage && <div className="text-red-500">{errorMessage}</div>}
-          <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700 mt-4">
+          {errorMessage && (
+            <div className="text-red-600 dark:text-red-400">{errorMessage}</div>
+          )}
+          <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-4">
             <div
               className="bg-blue-600 h-2.5 rounded-full"
               style={{ width: `${progress}%` }}
@@ -120,7 +120,7 @@ function FileUploadModal({ isOpen, onClose }) {
           <div className="mt-4">
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              className="w-full px-4 py-2 bg-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
             >
               Fechar
             </button>
