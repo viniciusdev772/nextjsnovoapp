@@ -79,7 +79,7 @@ function ItemList({ espacoDisponivel, items, onItemSelected }) {
                 </a>
                 <p>{item.description}</p>
                 <button
-                  className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded"
+                  className="mt-2 bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
                   onClick={() => onItemSelected(item)}
                 >
                   Ações
@@ -164,7 +164,7 @@ export default function Dashboard() {
           <span className="text-gray-900 font-semibold text-xl">Dashboard</span>
           <button
             onClick={openUploadModal}
-            className="text-gray-900 bg-white bg-opacity-80 hover:bg-opacity-90 transition duration-300 font-semibold px-4 py-2 rounded-lg shadow"
+            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
             Novo Envio
           </button>
