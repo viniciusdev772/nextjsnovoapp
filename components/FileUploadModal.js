@@ -5,6 +5,7 @@ function FileUploadModal({ isOpen, onClose }) {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [progress, setProgress] = useState(0);
+  const [showChooseButton, setShowChooseButton] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
   const MAX_FILE_SIZE = 700 * 1024 * 1024;
@@ -22,6 +23,7 @@ function FileUploadModal({ isOpen, onClose }) {
       }
 
       setFile(newFile);
+      setShowChooseButton(false); // Esconde o botão de escolher arquivo após a seleção
       if (newFile.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -63,6 +65,7 @@ function FileUploadModal({ isOpen, onClose }) {
       .then((response) => {
         console.log(response.data);
         onClose();
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Upload error: ", error);
@@ -93,12 +96,14 @@ function FileUploadModal({ isOpen, onClose }) {
               ref={fileInputRef}
               className="hidden"
             />
-            <button
-              onClick={triggerFileInput}
-              className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-            >
-              Escolher Arquivo
-            </button>
+            {showChooseButton && (
+              <button
+                onClick={triggerFileInput}
+                className="inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+              >
+                Escolher Arquivo
+              </button>
+            )}
             {file && (
               <button
                 onClick={handleUpload}
@@ -113,9 +118,11 @@ function FileUploadModal({ isOpen, onClose }) {
           )}
           <div className="w-full bg-gray-200 rounded-full dark:bg-gray-700 mt-4">
             <div
-              className="bg-blue-600 h-2.5 rounded-full"
+              className="bg-blue-600 h-2.5 rounded-full text-center text-white"
               style={{ width: `${progress}%` }}
-            ></div>
+            >
+              {progress > 0 && `${progress}%`}
+            </div>
           </div>
           <div className="mt-4">
             <button
