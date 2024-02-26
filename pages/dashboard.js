@@ -100,6 +100,7 @@ export default function Dashboard() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [items, setItems] = useState([]);
   const [plano, setPlano] = useState("");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [espacoDisponivel, setEspacoDisponivel] = useState(0);
   const [expiracao, setExpiracao] = useState("");
@@ -157,6 +158,12 @@ export default function Dashboard() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = "/";
+  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-white bg-opacity-30 backdrop-blur-lg p-4 fixed w-full z-10 border-b border-gray-200">
@@ -168,6 +175,46 @@ export default function Dashboard() {
           >
             Novo Envio
           </button>
+          <div className="relative">
+            <button
+              onClick={toggleMenu}
+              className="bg-gray-800 text-white p-2 rounded-md focus:outline-none"
+            >
+              Menu
+            </button>
+            {isMenuOpen && (
+              <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div
+                  className="py-1"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                >
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem"
+                  >
+                    Perfil
+                  </a>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem"
+                  >
+                    Configurações
+                  </a>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    role="menuitem"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
       <div className="pt-20">
