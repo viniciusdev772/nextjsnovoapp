@@ -251,7 +251,7 @@ export default function Dashboard() {
           ) : null}
           <ItemList
             espacoDisponivel={espacoDisponivel}
-            items={items}
+            items={filteredItems}
             onItemSelected={openActionsModal}
           />
         </div>
