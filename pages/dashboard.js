@@ -114,6 +114,11 @@ export default function Dashboard() {
   useEffect(() => {
     fetchDashboardData().then((data) => {
       setItems(data.arquivos || []);
+      //verificar se o o usuario está banido
+      if (data.banido) {
+        localStorage.clear();
+        window.location.href = "/ban";
+      }
       setExpiracao(data.expiracao || "");
       setPlano(data.plano || "free");
       setEspacoDisponivel(data.espacoDisponivel || 0);
