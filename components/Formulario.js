@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import Link from "next/link";
 
 function Formulario() {
   const [emailCadastro, setEmailCadastro] = useState("");
@@ -10,13 +11,19 @@ function Formulario() {
   const [modoFormulario, setModoFormulario] = useState("criarConta");
   const [mensagemResposta, setMensagemResposta] = useState("");
   const [carregando, setCarregando] = useState(false);
+  const [aceitaTermos, setAceitaTermos] = useState(false);
 
   const handleSubmitCriarConta = async (e) => {
     e.preventDefault();
+    if (!aceitaTermos) {
+      setMensagemResposta(
+        "É necessário aceitar os termos e condições para criar uma conta."
+      );
+      return;
+    }
 
     setCarregando(true);
     try {
-      // Faça a requisição POST com Axios
       const response = await axios.post(
         `${process.env.API_ENDPOINT}/new_user`,
         {
@@ -25,10 +32,8 @@ function Formulario() {
           senha: senhaCadastro,
         }
       );
-      // Processa a resposta e exibe a mensagem
       setMensagemResposta(response.data.message);
     } catch (error) {
-      // Trata erros na requisição
       console.error("Erro ao criar conta:", error);
       setMensagemResposta(
         error.response?.data?.message || "Erro ao criar conta."
@@ -41,40 +46,27 @@ function Formulario() {
     e.preventDefault();
 
     try {
-      // Faça a requisição POST com Axios
       const response = await axios.post(`${process.env.API_ENDPOINT}/login`, {
         email: emailLogin,
         senha: senhaLogin,
       });
-      // Processa a resposta e exibe a mensagem
       setMensagemResposta(response.data.message);
-
-      // Salva o token no localStorage
       localStorage.setItem("token", response.data.token);
-      //salva o email no localStorage
       localStorage.setItem("email", emailLogin);
-      //salva o nome no localStorage
       localStorage.setItem("nome", response.data.nome);
-      //salva o id no localStorage
       localStorage.setItem("uid", response.data.uid);
-      //salvar o storage no localStorage
       localStorage.setItem("storage", response.data.storage);
       localStorage.setItem("plano", response.data.plano);
-
-      // Redireciona para a página de dashboard
       window.location.href = "/dashboard";
     } catch (error) {
-      // Trata erros na requisição
-      console.error("Erro ao criar conta:", error);
+      console.error("Erro ao fazer login:", error);
       if (error.response?.data.banido) {
         window.location.href = "/ban";
       }
       setMensagemResposta(
-        error.response?.data?.message || "Erro ao criar conta."
+        error.response?.data?.message || "Erro ao fazer login."
       );
     }
-
-    console.log("Login:", { emailLogin, senhaLogin });
   };
 
   return (
@@ -119,6 +111,25 @@ function Formulario() {
                     value={nomeCadastro}
                     onChange={(e) => setNomeCadastro(e.target.value)}
                   />
+                </div>
+                <div>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={aceitaTermos}
+                      onChange={(e) => setAceitaTermos(e.target.checked)}
+                      className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                    />
+                    <span className="ml-2">
+                      Eu aceito os{" "}
+                      <Link href="/termos">
+                        <a className="text-indigo-600 underline">
+                          termos e condições
+                        </a>
+                      </Link>
+                      .
+                    </span>
+                  </label>
                 </div>
               </>
             )}
@@ -174,23 +185,8 @@ function Formulario() {
               <button
                 type="submit"
                 className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                disabled={carregando} // Desabilita o botão enquanto carrega
               >
-                {carregando ? (
-                  <div className="flex items-center justify-center">
-                    <div
-                      className="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full"
-                      role="status"
-                    >
-                      <span className="visually-hidden">Carregando...</span>
-                    </div>
-                    <span className="ml-2">Carregando...</span>
-                  </div>
-                ) : modoFormulario === "criarConta" ? (
-                  "Criar Conta"
-                ) : (
-                  "Entrar"
-                )}
+                {modoFormulario === "criarConta" ? "Criar Conta" : "Login"}
               </button>
             </div>
           </form>
@@ -200,7 +196,11 @@ function Formulario() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Ou</span>
+                <span className="px-2 bg-white text-gray-500">
+                  {modoFormulario === "criarConta"
+                    ? "Já tem uma conta?"
+                    : "Não tem uma conta?"}
+                </span>
               </div>
             </div>
             <div className="mt-6">
@@ -214,8 +214,8 @@ function Formulario() {
                 }
               >
                 {modoFormulario === "criarConta"
-                  ? "Já tem uma conta? Entrar"
-                  : "Não tem uma conta? Criar Conta"}
+                  ? "Fazer Login"
+                  : "Criar Conta"}
               </button>
             </div>
           </div>
