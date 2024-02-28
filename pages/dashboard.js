@@ -105,8 +105,10 @@ export default function Dashboard() {
   const [espacoDisponivel, setEspacoDisponivel] = useState(0);
   const [expiracao, setExpiracao] = useState("");
   const [promocoes, setPromocoes] = useState([
-    { titulo: "Precisa de 2GB?", descricao: "Temos também!" },
-    { titulo: "Precisa de 5GB?", descricao: "Temos também!" },
+    {
+      titulo: "Mais por Menos!",
+      descricao: "Mais espaço por menos dinheiro!",
+    },
   ]);
 
   useEffect(() => {
@@ -223,6 +225,7 @@ export default function Dashboard() {
             Bem-vindo, {nomeDoLocal || "Usuário"}!
           </h1>
 
+          <PromotionalBanner promocoes={promocoes} />
           {plano === "free" ? (
             <PlanosComponent />
           ) : plano ? (
