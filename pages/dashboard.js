@@ -101,7 +101,7 @@ export default function Dashboard() {
   const [items, setItems] = useState([]);
   const [plano, setPlano] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [espacoDisponivel, setEspacoDisponivel] = useState(0);
   const [expiracao, setExpiracao] = useState("");
   const [promocoes, setPromocoes] = useState([
@@ -129,6 +129,10 @@ export default function Dashboard() {
       setNomeDoLocal(nome);
     }
   }, []);
+
+  const filteredItems = items.filter((item) =>
+    item.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
@@ -182,6 +186,13 @@ export default function Dashboard() {
           >
             Novo Envio
           </button>
+          <input
+            type="text"
+            placeholder="Buscar por arquivo..."
+            className="ml-4 p-2 border rounded-lg"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <div className="relative">
             <button
               onClick={toggleMenu}
