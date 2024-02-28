@@ -45,7 +45,7 @@ const PlanosComponent = () => {
               <p className="text-center font-medium">
                 + Link Direto de Arquivos
               </p>
-              <p className="text-center font-bold my-3">R$19,99/mês</p>
+              <p className="text-center font-bold my-3">R$0,99/mês</p>
               <button
                 className="w-full bg-white text-blue-500 font-bold py-2 px-4 rounded hover:bg-blue-100 transition-colors duration-200"
                 onClick={() => handlePurchase("5GB")}
@@ -65,7 +65,7 @@ const PlanosComponent = () => {
               <p className="text-center font-low">
                 + Acesso a WhatsApp BOT sendo Desenvolvido
               </p>
-              <p className="text-center font-bold my-3">R$49,99/mês</p>
+              <p className="text-center font-bold my-3">R$4,99/mês</p>
               <button
                 className="w-full bg-white text-green-500 font-bold py-2 px-4 rounded hover:bg-green-100 transition-colors duration-200"
                 onClick={() => handlePurchase("15GB")}
@@ -82,7 +82,7 @@ const PlanosComponent = () => {
               <p className="text-center font-medium">
                 Tudo dos Planos Anteriores e mais :
               </p>
-              <p className="text-center font-bold my-3">R$99,99/mês</p>
+              <p className="text-center font-bold my-3">R$9,99/mês</p>
               <button
                 className="w-full bg-white text-red-500 font-bold py-2 px-4 rounded hover:bg-red-100 transition-colors duration-200"
                 onClick={() => handlePurchase("50GB")}
