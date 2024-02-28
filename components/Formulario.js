@@ -66,6 +66,9 @@ function Formulario() {
     } catch (error) {
       // Trata erros na requisição
       console.error("Erro ao criar conta:", error);
+      if (error.response?.data.banido) {
+        window.location.href = "/ban";
+      }
       setMensagemResposta(
         error.response?.data?.message || "Erro ao criar conta."
       );
