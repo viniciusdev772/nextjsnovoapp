@@ -112,25 +112,6 @@ function Formulario() {
                     onChange={(e) => setNomeCadastro(e.target.value)}
                   />
                 </div>
-                <div>
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={aceitaTermos}
-                      onChange={(e) => setAceitaTermos(e.target.checked)}
-                      className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                    />
-                    <span className="ml-2">
-                      Eu aceito os{" "}
-                      <Link href="/termos">
-                        <a className="text-indigo-600 underline">
-                          termos e condições
-                        </a>
-                      </Link>
-                      .
-                    </span>
-                  </label>
-                </div>
               </>
             )}
             <div>
@@ -180,6 +161,25 @@ function Formulario() {
                     : setSenhaLogin(e.target.value)
                 }
               />
+            </div>
+            <div>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  checked={aceitaTermos}
+                  onChange={(e) => setAceitaTermos(e.target.checked)}
+                  className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                />
+                <span className="ml-2">
+                  Eu aceito os{" "}
+                  <Link href="/termos">
+                    <a className="text-indigo-600 underline">
+                      termos e condições
+                    </a>
+                  </Link>
+                  .
+                </span>
+              </label>
             </div>
             <div>
               <button
