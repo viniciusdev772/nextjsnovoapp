@@ -43,6 +43,12 @@ export default function Termos() {
               de forma ilegal, incluindo, mas não limitado a, materiais
               protegidos por direitos autorais sem permissão.
             </p>
+            <p className="text-lg mb-4">
+              Além disso, alertamos que qualquer violação das regras pode
+              resultar no banimento permanente da conta do usuário, sem aviso
+              prévio. Levamos a sério a integridade e a segurança de nosso
+              serviço e de nossos usuários.
+            </p>
           </section>
 
           <section className="mb-10 p-8 bg-white rounded-lg shadow-md">
