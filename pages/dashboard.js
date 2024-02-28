@@ -101,7 +101,7 @@ export default function Dashboard() {
   const [items, setItems] = useState([]);
   const [plano, setPlano] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [espacoDisponivel, setEspacoDisponivel] = useState(0);
   const [expiracao, setExpiracao] = useState("");
   const [promocoes, setPromocoes] = useState([
@@ -114,7 +114,6 @@ export default function Dashboard() {
   useEffect(() => {
     fetchDashboardData().then((data) => {
       setItems(data.arquivos || []);
-      //verificar se o o usuario está banido
       if (data.banido) {
         localStorage.clear();
         window.location.href = "/ban";
@@ -129,6 +128,10 @@ export default function Dashboard() {
       setNomeDoLocal(nome);
     }
   }, []);
+
+  const filteredItems = items.filter((item) =>
+    item.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const openUploadModal = () => {
     setIsUploadModalOpen(true);
@@ -147,116 +150,56 @@ export default function Dashboard() {
 
   const removeFile = async (fileId) => {
     const tokenJWT = localStorage.getItem("token");
-    const response = await axios.post(
-      "https://cdn.viniciusdev.com.br/delete_event",
-      { id: fileId },
-      {
-        headers: {
-          Authorization: tokenJWT,
-        },
-      }
-    );
-    if (response.status === 200) {
-      closeActionsModal();
+    try {
+      await axios.post(
+        `https://cdn.viniciusdev.com.br/delete/${fileId}`,
+        {},
+        {
+          headers: {
+            Authorization: tokenJWT,
+          },
+        }
+      );
       setItems(items.filter((item) => item.id !== fileId));
-      window.location.reload();
-    } else {
-      alert("Erro ao deletar arquivo");
+      closeActionsModal();
+    } catch (error) {
+      console.error("Erro ao remover arquivo:", error);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.href = "/";
-  };
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white bg-opacity-30 backdrop-blur-lg p-4 fixed w-full z-10 border-b border-gray-200">
-        <div className="container mx-auto flex justify-between items-center">
-          <span className="text-gray-900 font-semibold text-xl">Dashboard</span>
-          <button
-            onClick={openUploadModal}
-            className="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-          >
-            Novo Envio
-          </button>
-          <div className="relative">
-            <button
-              onClick={toggleMenu}
-              className="bg-gray-800 text-white p-2 rounded-md focus:outline-none"
-            >
-              Menu
-            </button>
-            {isMenuOpen && (
-              <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                <div
-                  className="py-1"
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="options-menu"
-                >
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    role="menuitem"
-                  >
-                    Perfil
-                  </a>
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    role="menuitem"
-                  >
-                    Configurações
-                  </a>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    role="menuitem"
-                  >
-                    Logout
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </nav>
-      <div className="pt-20">
-        <div className="container mx-auto p-4">
-          <h1 className="text-3xl font-bold mb-6 text-gray-800">
-            Bem-vindo, {nomeDoLocal || "Usuário"}!
-          </h1>
-
-          <PromotionalBanner promocoes={promocoes} />
-          {plano === "free" ? (
-            <PlanosComponent />
-          ) : plano ? (
-            <div className="mb-6 text-lg font-semibold">
-              Seu Plano é de {plano} e expira em {expiracao}
-            </div>
-          ) : null}
-          <ItemList
-            espacoDisponivel={espacoDisponivel}
-            items={items}
-            onItemSelected={openActionsModal}
-          />
-        </div>
-        {selectedFile && (
-          <FileActionsModal
-            isOpen={isActionsModalOpen}
-            onClose={closeActionsModal}
-            onRemove={removeFile}
-            file={selectedFile}
-          />
-        )}
-        <FileUploadModal
-          isOpen={isUploadModalOpen}
-          onClose={closeUploadModal}
+    <div className="container mx-auto px-4">
+      <h1 className="text-2xl font-bold mb-4">Dashboard de {nomeDoLocal}</h1>
+      <PromotionalBanner promocoes={promocoes} />
+      <div className="mb-6">
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+          onClick={openUploadModal}
+        >
+          Enviar Arquivo
+        </button>
+        <input
+          type="text"
+          placeholder="Buscar por arquivo..."
+          className="ml-4 p-2 border rounded-lg"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
       </div>
+      <ItemList
+        espacoDisponivel={espacoDisponivel}
+        items={filteredItems}
+        onItemSelected={openActionsModal}
+      />
+      {isUploadModalOpen && <FileUploadModal closeModal={closeUploadModal} />}
+      {isActionsModalOpen && (
+        <FileActionsModal
+          file={selectedFile}
+          closeModal={closeActionsModal}
+          removeFile={removeFile}
+        />
+      )}
+      <PlanosComponent plano={plano} expiracao={expiracao} />
     </div>
   );
 }
