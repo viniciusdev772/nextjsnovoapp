@@ -106,8 +106,9 @@ export default function Dashboard() {
   const [expiracao, setExpiracao] = useState("");
   const [promocoes, setPromocoes] = useState([
     {
-      titulo: "Mais por Menos!",
-      descricao: "Mais espaço por menos dinheiro!",
+      titulo: "AVISO",
+      descricao:
+        "esse servidor deixará de usar o link servidor.viniciusdev.com.br em breve novo link será viniciusdev.com.br, entrará em vigor dia 8 de março",
     },
   ]);
 
