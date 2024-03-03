@@ -282,6 +282,7 @@ export default function Dashboard() {
             isOpen={isActionsModalOpen}
             onClose={closeActionsModal}
             onRemove={removeFile}
+            onGenerateLink={RegenerateLink}
             file={selectedFile}
           />
         )}
