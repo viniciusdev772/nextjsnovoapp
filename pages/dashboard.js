@@ -78,6 +78,7 @@ function ItemList({ espacoDisponivel, items, onItemSelected }) {
                   {item.link}
                 </a>
                 <p>{item.description}</p>
+                <p>Downloads {item.downloads} </p>
                 <button
                   className="mt-2 bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-4 rounded-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
                   onClick={() => onItemSelected(item)}
