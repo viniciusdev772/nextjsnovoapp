@@ -171,6 +171,26 @@ export default function Dashboard() {
     }
   };
 
+  const RegenerateLink = async (fileId) => {
+    const tokenJWT = localStorage.getItem("token");
+    const response = await axios.post(
+      "https://cdn.viniciusdev.com.br/regen_event",
+      { fileid: fileId },
+      {
+        headers: {
+          Authorization: tokenJWT,
+        },
+      }
+    );
+    if (response.status === 200) {
+      closeActionsModal();
+      setItems(items.filter((item) => item.id !== fileId));
+      window.location.reload();
+    } else {
+      alert("Erro ao deletar arquivo");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = "/";
