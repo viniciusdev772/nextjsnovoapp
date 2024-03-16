@@ -9,7 +9,6 @@ const AuthorizePage = () => {
   useEffect(() => {
     const { token } = router.query;
     if (token) {
-      
     } else {
       router.push("/");
     }
@@ -40,6 +39,7 @@ const AuthorizePage = () => {
   const handleAuthorizeClick = () => {
     const { token } = router.query;
     if (token) {
+      alert(token);
       authenticateToken(token);
     } else {
       router.push("/");
