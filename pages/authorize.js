@@ -10,7 +10,7 @@ const AuthorizePage = () => {
     const { token } = router.query;
     if (token) {
     } else {
-      alert("Token não encontrado.");
+      alert("Token não encontrado da URL.");
     }
   }, []);
 
@@ -42,7 +42,7 @@ const AuthorizePage = () => {
       alert(token);
       authenticateToken(token);
     } else {
-      alert("Token não encontrado.");
+      alert("Token não encontrado d URL.");
     }
   };
 
