@@ -9,7 +9,7 @@ const AuthorizePage = () => {
   useEffect(() => {
     const { token } = router.query;
     if (token) {
-      authenticateToken(token);
+      
     } else {
       router.push("/");
     }
