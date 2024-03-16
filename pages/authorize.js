@@ -6,14 +6,6 @@ const AuthorizePage = () => {
   const router = useRouter();
   const [authorizationStatus, setAuthorizationStatus] = useState(null);
 
-  useEffect(() => {
-    const { token } = router.query;
-    if (token) {
-    } else {
-      alert("Token não encontrado da URL.");
-    }
-  }, []);
-
   const authenticateToken = async (urlToken) => {
     try {
       const localStorageToken = localStorage.getItem("token");
@@ -39,7 +31,6 @@ const AuthorizePage = () => {
   const handleAuthorizeClick = () => {
     const { token } = router.query;
     if (token) {
-      alert(token);
       authenticateToken(token);
     } else {
       alert("Token não encontrado d URL.");
