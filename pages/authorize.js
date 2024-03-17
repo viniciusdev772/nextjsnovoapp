@@ -6,21 +6,16 @@ const AuthorizePage = () => {
   const router = useRouter();
   const [authorizationStatus, setAuthorizationStatus] = useState(null);
 
-  const authenticateToken = async (urlToken) => {
+  const authenticateToken = async (urlToken, localStorageToken) => {
     try {
-      const localStorageToken = localStorage.getItem("token");
-      if (localStorageToken) {
-        const response = await axios.post(
-          "https://cdn.viniciusdev.com.br/registrar_auth",
-          { token: urlToken, auth: localStorageToken }
-        );
-        if (response.data.status === "ok") {
-          setAuthorizationStatus("authorized");
-        } else {
-          setAuthorizationStatus("error");
-        }
+      const response = await axios.post(
+        "https://cdn.viniciusdev.com.br/registrar_auth",
+        { token: urlToken, auth: localStorageToken }
+      );
+      if (response.data.status === "ok") {
+        setAuthorizationStatus("authorized");
       } else {
-        setAuthorizationStatus("localStorageTokenMissing");
+        setAuthorizationStatus("error");
       }
     } catch (error) {
       console.error("Erro ao enviar os tokens:", error);
@@ -30,10 +25,11 @@ const AuthorizePage = () => {
 
   const handleAuthorizeClick = () => {
     const { token } = router.query;
-    if (token) {
-      authenticateToken(token);
+    const localStorageToken = localStorage.getItem("token");
+    if (token && localStorageToken) {
+      authenticateToken(token, localStorageToken);
     } else {
-      alert("Token não encontrado d URL.");
+      alert("Token não encontrado na URL ou no armazenamento local.");
     }
   };
 
