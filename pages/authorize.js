@@ -5,8 +5,11 @@ import axios from "axios";
 const AuthorizePage = () => {
   const router = useRouter();
   const [authorizationStatus, setAuthorizationStatus] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const authenticateToken = async (urlToken, localStorageToken) => {
+    setIsLoading(true);
     try {
       const response = await axios.post(
         "https://cdn.viniciusdev.com.br/registrar_auth",
@@ -16,10 +19,16 @@ const AuthorizePage = () => {
         setAuthorizationStatus("authorized");
       } else {
         setAuthorizationStatus("error");
+        setErrorMessage("Não foi possível conceder autorização.");
       }
     } catch (error) {
       console.error("Erro ao enviar os tokens:", error);
       setAuthorizationStatus("error");
+      setErrorMessage(
+        "Ocorreu um erro ao processar a solicitação. Tente novamente mais tarde."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -29,28 +38,31 @@ const AuthorizePage = () => {
     if (token && localStorageToken) {
       authenticateToken(token, localStorageToken);
     } else {
-      alert("Token não encontrado na URL ou no armazenamento local.");
+      setErrorMessage("Token não encontrado na URL ou no armazenamento local.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-lg w-full bg-white p-8 rounded shadow-md">
+      <div className="max-w-md w-full bg-white p-8 rounded shadow-md">
         <h2 className="text-3xl font-semibold text-center mb-6">
           Autorização de Login
         </h2>
-        <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-          <p className="text-blue-600 font-semibold">Bem-vindo ao Nosso App!</p>
-          <p className="text-gray-700">
+        <div className="mb-6">
+          <p className="text-gray-700 text-center">Bem-vindo ao Nosso App!</p>
+          <p className="text-gray-600 text-center mt-2">
             Por favor, faça login com sua conta para continuar.
           </p>
         </div>
-        <div className="flex items-center justify-center mb-6">
+        <div className="flex justify-center mb-6">
           <button
             onClick={handleAuthorizeClick}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full focus:outline-none focus:ring focus:ring-blue-200"
+            disabled={isLoading}
+            className={`bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-full focus:outline-none focus:ring focus:ring-blue-200 ${
+              isLoading && "opacity-50 cursor-not-allowed"
+            }`}
           >
-            Conceder Autorização
+            {isLoading ? "Aguarde..." : "Conceder Autorização"}
           </button>
         </div>
         {authorizationStatus === "authorized" && (
@@ -66,10 +78,7 @@ const AuthorizePage = () => {
         {authorizationStatus === "error" && (
           <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
             <p className="text-red-600 font-semibold">Erro de Autorização</p>
-            <p className="text-gray-700">
-              Houve um problema ao processar sua autorização. Por favor, tente
-              novamente mais tarde.
-            </p>
+            <p className="text-gray-700">{errorMessage}</p>
           </div>
         )}
         <p className="text-center text-gray-600">
