@@ -40,13 +40,7 @@ const AuthorizePage = () => {
     authenticateToken(token, localStorageToken);
   };
 
-  useEffect(() => {
-    if (!router.query.token) {
-      setAuthorizationStatus("error");
-      setErrorMessage("Token não encontrado na URL.");
-    }
-  }, [router.query.token]);
-
+ 
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       setAuthorizationStatus("error");
