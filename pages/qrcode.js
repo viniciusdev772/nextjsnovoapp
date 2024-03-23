@@ -6,6 +6,7 @@ const QrCodePage = () => {
   const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
   const [token, setToken] = useState("");
+  const [registrationComplete, setRegistrationComplete] = useState(false);
 
   useEffect(() => {
     const fetchQrCode = async () => {
@@ -61,6 +62,7 @@ const QrCodePage = () => {
           );
           const responseData = await response.json();
           console.log("Resposta da API (register_qr):", responseData);
+          setRegistrationComplete(true); // Marca o registro como concluído
         } catch (error) {
           console.error(
             "Erro ao enviar solicitação POST (register_qr):",
@@ -69,57 +71,23 @@ const QrCodePage = () => {
         }
       };
 
-      // Função para fazer a solicitação POST para a API (check_qr)
-      const checkQR = async () => {
-        try {
-          const checkResponse = await fetch(
-            "https://cdn.viniciusdev.com.br/check_qr",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                token: uniqueToken,
-                unico: uniqueToken,
-              }),
-            }
-          );
-          const checkData = await checkResponse.json();
-          console.log("Resposta da API (check_qr):", checkData);
-          if (checkData.token && checkData.token !== "") {
-            localStorage.setItem("token", checkData.token);
-            router.push("/");
-          }
-        } catch (error) {
-          console.error("Erro ao enviar solicitação POST (check_qr):", error);
-        }
-      };
-
       // Realizar o registro QR ao montar o componente
       registerQR();
-
-      // Verificar o QR a cada 5 segundos
-      const interval = setInterval(() => {
-        checkQR();
-      }, 5000);
-
-      // Limpar o intervalo quando o componente é desmontado
-      return () => clearInterval(interval);
     };
 
     fetchQrCode();
   }, []);
 
+  // Renderizar o componente de QR Code somente quando o registro estiver completo
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
-      {userInfo && (
+      {registrationComplete && userInfo && (
         <div className="bg-white shadow-md rounded-lg p-8">
           <div className="mb-4">
             <QRCode value={userInfo} size={256} />
           </div>
           <p className="text-gray-600 text-sm mb-2">
-            Escaneie o QR Code acima para visualizar as informações.
+            Escaneie o QR Code para fazer login pelo App Móvel
           </p>
           {token && (
             <p className="text-gray-600 text-sm">Token único: {token}</p>
