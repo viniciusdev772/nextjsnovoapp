@@ -65,47 +65,46 @@ const QrCodePage = () => {
       };
 
       registerQR();
-
-      const interval = setInterval(() => {
-        if (registrationComplete) {
-          const checkQR = async () => {
-            try {
-              const checkResponse = await fetch(
-                "https://cdn.viniciusdev.com.br/check_qr",
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    token: uniqueToken,
-                    unico: uniqueToken,
-                  }),
-                }
-              );
-              const checkData = await checkResponse.json();
-              console.log("Resposta da API (check_qr):", checkData);
-              if (checkData.token && checkData.token !== "") {
-                localStorage.setItem("token", checkData.token);
-                router.push("/");
-              }
-            } catch (error) {
-              console.error(
-                "Erro ao enviar solicitação POST (check_qr):",
-                error
-              );
-            }
-          };
-
-          checkQR();
-        }
-      }, 5000);
-
-      return () => clearInterval(interval);
     };
 
     fetchQrCode();
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (registrationComplete) {
+        const checkQR = async () => {
+          try {
+            const checkResponse = await fetch(
+              "https://cdn.viniciusdev.com.br/check_qr",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  token: token,
+                  unico: token,
+                }),
+              }
+            );
+            const checkData = await checkResponse.json();
+            console.log("Resposta da API (check_qr):", checkData);
+            if (checkData.token && checkData.token !== "") {
+              localStorage.setItem("token", checkData.token);
+              router.push("/");
+            }
+          } catch (error) {
+            console.error("Erro ao enviar solicitação POST (check_qr):", error);
+          }
+        };
+
+        checkQR();
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [registrationComplete, token, router]);
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
