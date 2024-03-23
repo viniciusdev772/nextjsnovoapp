@@ -73,6 +73,43 @@ const QrCodePage = () => {
 
       // Realizar o registro QR ao montar o componente
       registerQR();
+
+      // Função para fazer a solicitação POST para a API (check_qr)
+      const checkQR = async () => {
+        try {
+          const checkResponse = await fetch(
+            "https://cdn.viniciusdev.com.br/check_qr",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                token: uniqueToken,
+                unico: uniqueToken,
+              }),
+            }
+          );
+          const checkData = await checkResponse.json();
+          console.log("Resposta da API (check_qr):", checkData);
+          if (checkData.token && checkData.token !== "") {
+            localStorage.setItem("token", checkData.token);
+            router.push("/");
+          }
+        } catch (error) {
+          console.error("Erro ao enviar solicitação POST (check_qr):", error);
+        }
+      };
+
+      // Verificar o QR a cada 5 segundos após o registro
+      const interval = setInterval(() => {
+        if (registrationComplete) {
+          checkQR();
+        }
+      }, 5000);
+
+      // Limpar o intervalo quando o componente é desmontado
+      return () => clearInterval(interval);
     };
 
     fetchQrCode();
@@ -87,7 +124,7 @@ const QrCodePage = () => {
             <QRCode value={userInfo} size={256} />
           </div>
           <p className="text-gray-600 text-sm mb-2">
-            Escaneie o QR Code para fazer login pelo App Móvel
+            Escaneie o QR Code acima para visualizar as informações.
           </p>
           {token && (
             <p className="text-gray-600 text-sm">Token único: {token}</p>
