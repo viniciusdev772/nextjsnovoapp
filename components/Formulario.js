@@ -179,6 +179,13 @@ function Formulario() {
                   </Link>
                   .
                 </span>
+                <span className="ml-2">
+                  Login por
+                  <Link href="/qrcode">
+                    <a className="text-indigo-600 underline">QrCode</a>
+                  </Link>
+                  .
+                </span>
               </label>
             </div>
             <div>
