@@ -10,12 +10,10 @@ const QrCodePage = () => {
 
   useEffect(() => {
     const fetchQrCode = async () => {
-      // Função para obter o User Agent
       const getUserAgent = () => {
         return navigator.userAgent;
       };
 
-      // Função para obter outras informações do navegador
       const getBrowserInfo = () => {
         return {
           language: navigator.language,
@@ -23,28 +21,23 @@ const QrCodePage = () => {
         };
       };
 
-      // Criar um token único
       const generateToken = () => {
         return Math.random().toString(36).substr(2) + Date.now().toString(36);
       };
 
-      // Obter informações do navegador e gerar o token ao montar o componente
       const userAgent = getUserAgent();
       const browserInfo = getBrowserInfo();
       const uniqueToken = generateToken();
 
-      // Montar o objeto JSON
       const data = {
         userAgent: userAgent,
         browserInfo: browserInfo,
       };
 
-      // Codificar o JSON em Base64
       const jsonData = btoa(JSON.stringify(data));
       setUserInfo(jsonData);
       setToken(uniqueToken);
 
-      // Função para fazer a solicitação POST para a API (register_qr)
       const registerQR = async () => {
         try {
           const response = await fetch(
@@ -62,7 +55,7 @@ const QrCodePage = () => {
           );
           const responseData = await response.json();
           console.log("Resposta da API (register_qr):", responseData);
-          setRegistrationComplete(true); // Marca o registro como concluído
+          setRegistrationComplete(true);
         } catch (error) {
           console.error(
             "Erro ao enviar solicitação POST (register_qr):",
@@ -71,51 +64,49 @@ const QrCodePage = () => {
         }
       };
 
-      // Realizar o registro QR ao montar o componente
       registerQR();
 
-      // Função para fazer a solicitação POST para a API (check_qr)
-      const checkQR = async () => {
-        try {
-          const checkResponse = await fetch(
-            "https://cdn.viniciusdev.com.br/check_qr",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                token: uniqueToken,
-                unico: uniqueToken,
-              }),
-            }
-          );
-          const checkData = await checkResponse.json();
-          console.log("Resposta da API (check_qr):", checkData);
-          if (checkData.token && checkData.token !== "") {
-            localStorage.setItem("token", checkData.token);
-            router.push("/");
-          }
-        } catch (error) {
-          console.error("Erro ao enviar solicitação POST (check_qr):", error);
-        }
-      };
-
-      // Verificar o QR a cada 5 segundos após o registro
       const interval = setInterval(() => {
         if (registrationComplete) {
+          const checkQR = async () => {
+            try {
+              const checkResponse = await fetch(
+                "https://cdn.viniciusdev.com.br/check_qr",
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    token: uniqueToken,
+                    unico: uniqueToken,
+                  }),
+                }
+              );
+              const checkData = await checkResponse.json();
+              console.log("Resposta da API (check_qr):", checkData);
+              if (checkData.token && checkData.token !== "") {
+                localStorage.setItem("token", checkData.token);
+                router.push("/");
+              }
+            } catch (error) {
+              console.error(
+                "Erro ao enviar solicitação POST (check_qr):",
+                error
+              );
+            }
+          };
+
           checkQR();
         }
       }, 5000);
 
-      // Limpar o intervalo quando o componente é desmontado
       return () => clearInterval(interval);
     };
 
     fetchQrCode();
   }, []);
 
-  // Renderizar o componente de QR Code somente quando o registro estiver completo
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
       {registrationComplete && userInfo && (
