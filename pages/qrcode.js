@@ -101,7 +101,7 @@ const QrCodePage = () => {
 
         checkQR();
       }
-    }, 15000);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, [registrationComplete, token, router]);
@@ -114,8 +114,7 @@ const QrCodePage = () => {
             <QRCode value={userInfo} size={256} />
           </div>
           <p className="text-gray-600 text-sm mb-2">
-            Escaneie o QR Code acima para visualizar as informações. Verificação
-            a cada 15 segundos.
+            Faça login no site escaneando pelo App Móvel.
           </p>
           {token && (
             <p className="text-gray-600 text-sm">Token único: {token}</p>
