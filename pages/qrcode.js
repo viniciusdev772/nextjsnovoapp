@@ -32,6 +32,7 @@ const QrCodePage = () => {
       const data = {
         userAgent: userAgent,
         browserInfo: browserInfo,
+        uniqueToken: uniqueToken,
       };
 
       const jsonData = btoa(JSON.stringify(data));
