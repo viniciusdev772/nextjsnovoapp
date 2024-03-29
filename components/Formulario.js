@@ -180,11 +180,18 @@ function Formulario() {
                   .
                 </span>
                 <span className="ml-2">
-                  Login por
+                  Login por{" "}
                   <Link href="/qrcode">
                     <a className="text-indigo-600 underline">QrCode</a>
                   </Link>
                   .
+                </span>
+                <span className="ml-2">
+                  <Link href="/mudar-senha">
+                    <a className="text-indigo-600 underline">
+                      Esqueceu a senha?
+                    </a>
+                  </Link>
                 </span>
               </label>
             </div>
