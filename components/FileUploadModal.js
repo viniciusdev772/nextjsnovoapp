@@ -51,6 +51,7 @@ function FileUploadModal({ isOpen, onClose }) {
       headers: {
         Authorization: localStorage.getItem("token"),
         "Content-Type": "multipart/form-data",
+        "Content-Length": file.size,
       },
       onUploadProgress: function (progressEvent) {
         let percentCompleted = Math.round(
