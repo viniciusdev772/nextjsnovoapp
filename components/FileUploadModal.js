@@ -1,6 +1,5 @@
 import { useState, useRef } from "react";
 import axios from "axios";
-import * as Minio from "minio";
 
 function FileUploadModal({ isOpen, onClose }) {
   const [file, setFile] = useState(null);
@@ -10,13 +9,6 @@ function FileUploadModal({ isOpen, onClose }) {
   const [errorMessage, setErrorMessage] = useState("");
   const fileInputRef = useRef(null);
   const MAX_FILE_SIZE = 700 * 1024 * 1024;
-
-  const minioClient = new Minio.Client({
-    endPoint: "s3.viniciusdev.com.br",
-    useSSL: true, // Set to true if you're using HTTPS
-    accessKey: "HOUVntr7QLpZ7nmfBnGz",
-    secretKey: "rZogKYM1x5E2ps1oiFbciS2qkQp0pnbyjLSvRYr2",
-  });
 
   const handleFileChange = (event) => {
     const newFile = event.target.files[0];
@@ -52,28 +44,34 @@ function FileUploadModal({ isOpen, onClose }) {
   const handleUpload = () => {
     if (!file) return;
 
-    const filePath = `uploads/${file.name}`;
-    const metaData = {
-      "Content-Type": file.type,
-      "X-Amz-Meta-Testing": 1234, // Example metadata
+    const formData = new FormData();
+    formData.append("arquivo", file);
+
+    const config = {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+        "Content-Type": "multipart/form-data",
+        "Content-Length": file.size,
+      },
+      onUploadProgress: function (progressEvent) {
+        let percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+        setProgress(percentCompleted);
+      },
     };
 
-    minioClient.fPutObject(
-      "jjjjhhjjh",
-      filePath,
-      file,
-      metaData,
-      function (err, etag) {
-        if (err) {
-          console.error("Error uploading file to MinIO:", err);
-          setErrorMessage("Erro ao fazer upload do arquivo: " + err.message);
-          return;
-        }
-        console.log("File uploaded successfully.");
+    axios
+      .post("https://cdn.viniciusdev.com.br/upload_event", formData, config)
+      .then((response) => {
+        console.log(response.data);
         onClose();
         window.location.reload();
-      }
-    );
+      })
+      .catch((error) => {
+        console.error("Upload error: ", error);
+        setErrorMessage("Erro ao fazer upload do arquivo: " + error.message);
+      });
   };
 
   if (!isOpen) return null;
