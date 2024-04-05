@@ -13,7 +13,7 @@ export default function Termos() {
               Termos de Serviço
             </h1>
             <p className="mt-4 text-lg text-center">
-              Última atualização: 27 de fevereiro de 2024
+              Última atualização: 5 de abril de 2024
             </p>
           </div>
 
@@ -29,7 +29,7 @@ export default function Termos() {
           <section className="mb-10 p-8 bg-white rounded-lg shadow-md">
             <h2 className="text-3xl font-bold mb-6">2. Serviços Oferecidos</h2>
             <p className="text-lg mb-4">
-              Nosso serviço oferece armazenamento de arquivos com 1GB gratuito
+              Nosso serviço oferece armazenamento de arquivos com 5GB gratuito
               para cada usuário, com velocidades de download ultra-rápidas e
               links diretos para todos os arquivos.
             </p>
@@ -63,11 +63,26 @@ export default function Termos() {
             </p>
           </section>
 
-          <section className="p-8 bg-white rounded-lg shadow-md">
+          <section className="mb-10 p-8 bg-white rounded-lg shadow-md">
             <h2 className="text-3xl font-bold mb-6">5. Contato</h2>
             <p className="text-lg mb-4">
               Em caso de dúvidas sobre estes termos, por favor, entre em contato
               conosco através do nosso site.
+            </p>
+          </section>
+
+          {/* Termos adicionais */}
+          <section className="mb-10 p-8 bg-white rounded-lg shadow-md">
+            <h2 className="text-3xl font-bold mb-6">6. Privacidade dos Dados</h2>
+            <p className="text-lg mb-4">
+              Nós nos comprometemos a proteger a privacidade dos dados dos usuários. Todos os dados pessoais são tratados de acordo com nossa política de privacidade.
+            </p>
+          </section>
+
+          <section className="mb-10 p-8 bg-white rounded-lg shadow-md">
+            <h2 className="text-3xl font-bold mb-6">7. Responsabilidade do Usuário</h2>
+            <p className="text-lg mb-4">
+              O usuário é responsável por manter a segurança de sua conta e senha. Não nos responsabilizamos por acessos não autorizados à conta do usuário devido à negligência na proteção de suas credenciais.
             </p>
           </section>
         </div>
