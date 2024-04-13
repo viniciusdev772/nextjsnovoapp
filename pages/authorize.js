@@ -9,6 +9,7 @@ const AuthorizePage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showAddAccount, setShowAddAccount] = useState(false); // Variável de estado para controlar a exibição do botão "Adicionar conta"
+  const [userName, setUserName] = useState("");
 
   const authenticateToken = async (urlToken, localStorageToken) => {
     setIsLoading(true);
@@ -57,8 +58,11 @@ const AuthorizePage = () => {
 
   useEffect(() => {
     const localStorageToken = localStorage.getItem("token");
+    const storedUserName = localStorage.getItem("nome");
     if (!localStorageToken) {
       setShowAddAccount(true); // Mostrar o botão "Adicionar conta" se não houver nenhum token no armazenamento local
+    } else {
+      setUserName(storedUserName);
     }
   }, []);
 
@@ -76,6 +80,17 @@ const AuthorizePage = () => {
           <p className="mt-2 text-sm text-gray-500">SSO by Vdev</p>
         </div>
         <div className="mt-8">
+          {userName && ( // Renderizar o perfil bonito se userName estiver definido
+            <div className="flex items-center justify-center mb-6">
+              {/* Substitua o ícone de perfil abaixo pelo ícone real que você deseja usar */}
+              <img
+                src="caminho_para_o_icone_de_perfil"
+                alt="Perfil"
+                className="h-8 w-8 rounded-full"
+              />
+              <span className="ml-2 text-gray-700">{userName}</span>
+            </div>
+          )}
           {showAddAccount && ( // Renderizar o botão "Adicionar conta" se showAddAccount for true
             <div className="mb-6">
               <button
@@ -118,7 +133,7 @@ const AuthorizePage = () => {
                     ></path>
                   </svg>
                 ) : (
-                  "Conceder Autorização"
+                  `Logar com ${userName}`
                 )}
               </button>
             </div>
