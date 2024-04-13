@@ -25,7 +25,7 @@ const AuthorizePage = () => {
       );
       if (response.data.status === "ok") {
         if (urlToken.startsWith("webtoken")) {
-          window.location.href = `https://vdev.viniciusdev.com.br?token=${urlToken}`;
+          window.location.href = `https://vdev.viniciusdev.com.br/usuario/login?token=${urlToken}`;
         }
         setAuthorizationStatus("authorized");
       } else {
