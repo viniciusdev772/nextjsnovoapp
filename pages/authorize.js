@@ -24,6 +24,9 @@ const AuthorizePage = () => {
         { token: urlToken, auth: localStorageToken }
       );
       if (response.data.status === "ok") {
+        if (urlToken.startsWith("webtoken")) {
+          window.location.href = `https://vdev.viniciusdev.com.br?token=${urlToken}`;
+        }
         setAuthorizationStatus("authorized");
       } else {
         setAuthorizationStatus("error");
