@@ -110,6 +110,13 @@ const AuthorizePage = () => {
               <p className="text-red-500">{errorMessage}</p>
             </div>
           )}
+          {authorizationStatus === "authorized" && (
+            <div className="text-center">
+              <p className="text-green-500">
+                Autorização concedida com sucesso!
+              </p>
+            </div>
+          )}
         </div>
         <p className="mt-4 text-center text-sm text-gray-500">
           Ao clicar em "Conceder Autorização", você concorda com nossos Termos
