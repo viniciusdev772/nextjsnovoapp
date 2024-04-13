@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
-import { LockClosedIcon, PlusCircleIcon } from "@heroicons/react/solid"; // Importe o ícone PlusCircleIcon para "Adicionar conta"
+import {
+  LockClosedIcon,
+  PlusCircleIcon,
+  UserCircleIcon,
+} from "@heroicons/react/solid"; // Importe o ícone PlusCircleIcon para "Adicionar conta"
 
 const AuthorizePage = () => {
   const router = useRouter();
@@ -83,10 +87,9 @@ const AuthorizePage = () => {
           {userName && ( // Renderizar o perfil bonito se userName estiver definido
             <div className="flex items-center justify-center mb-6">
               {/* Substitua o ícone de perfil abaixo pelo ícone real que você deseja usar */}
-              <img
-                src="caminho_para_o_icone_de_perfil"
-                alt="Perfil"
-                className="h-8 w-8 rounded-full"
+              <UserCircleIcon
+                className="h-8 w-8 text-gray-700"
+                aria-hidden="true"
               />
               <span className="ml-2 text-gray-700">{userName}</span>
             </div>
